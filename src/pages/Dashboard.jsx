@@ -17,8 +17,8 @@ import {
   Modal,
   Tabs,
   ProgressBar,
-} from "../components/ui";
-import Button from "../components/Button";
+} from "../Components/ui";
+import Button from "../Components/Button";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";

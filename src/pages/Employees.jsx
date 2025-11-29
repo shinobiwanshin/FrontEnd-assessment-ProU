@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Card, Badge, Avatar, Modal, ProgressBar } from "../components/ui";
-import Button from "../components/Button";
+import { Card, Badge, Avatar, Modal, ProgressBar } from "../Components/ui";
+import Button from "../Components/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import WorkIcon from "@mui/icons-material/Work";
 import EmailIcon from "@mui/icons-material/Email";
