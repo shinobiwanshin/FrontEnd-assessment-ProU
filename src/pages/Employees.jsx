@@ -6,127 +6,19 @@ import WorkIcon from "@mui/icons-material/Work";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import GroupsIcon from "@mui/icons-material/Groups";
+import sampleNestedData from "../Entities/sampleNestedEmployees.json";
+import { normalizeNestedEmployeesData } from "../utils/normalizeMockData";
 
-// Mock Data
-const initialEmployees = [
-  {
-    id: "1",
-    name: "Alice Johnson",
-    position: "Frontend Developer",
-    department: "Engineering",
-    email: "alice@company.com",
-    phone: "+1 555-0101",
-  },
-  {
-    id: "2",
-    name: "Bob Smith",
-    position: "Backend Developer",
-    department: "Engineering",
-    email: "bob@company.com",
-    phone: "+1 555-0102",
-  },
-  {
-    id: "3",
-    name: "Carol Williams",
-    position: "UI/UX Designer",
-    department: "Design",
-    email: "carol@company.com",
-    phone: "+1 555-0103",
-  },
-  {
-    id: "4",
-    name: "David Brown",
-    position: "Project Manager",
-    department: "Marketing",
-    email: "david@company.com",
-    phone: "+1 555-0104",
-  },
-  {
-    id: "5",
-    name: "Emma Davis",
-    position: "HR Specialist",
-    department: "HR",
-    email: "emma@company.com",
-    phone: "+1 555-0105",
-  },
-  {
-    id: "6",
-    name: "Frank Miller",
-    position: "DevOps Engineer",
-    department: "Engineering",
-    email: "frank@company.com",
-    phone: "+1 555-0106",
-  },
-  {
-    id: "7",
-    name: "Grace Lee",
-    position: "Data Analyst",
-    department: "Analytics",
-    email: "grace@company.com",
-    phone: "+1 555-0107",
-  },
-  {
-    id: "8",
-    name: "Henry Wilson",
-    position: "QA Engineer",
-    department: "Engineering",
-    email: "henry@company.com",
-    phone: "+1 555-0108",
-  },
-];
+// normalized mock data
+const { employees: initialEmployees, tasks: initialTasks } =
+  normalizeNestedEmployeesData(sampleNestedData);
 
-const initialTasks = [
-  {
-    id: "101",
-    title: "Build login page",
-    status: "completed",
-    assigned_to: "1",
-  },
-  {
-    id: "102",
-    title: "Implement dashboard",
-    status: "in_progress",
-    assigned_to: "1",
-  },
-  { id: "103", title: "API integration", status: "pending", assigned_to: "2" },
-  {
-    id: "104",
-    title: "Design new icons",
-    status: "completed",
-    assigned_to: "3",
-  },
-  {
-    id: "105",
-    title: "Create wireframes",
-    status: "in_progress",
-    assigned_to: "3",
-  },
-  { id: "106", title: "User research", status: "pending", assigned_to: "3" },
-  {
-    id: "107",
-    title: "Sprint planning",
-    status: "completed",
-    assigned_to: "4",
-  },
-  {
-    id: "108",
-    title: "Client meeting prep",
-    status: "pending",
-    assigned_to: "4",
-  },
-  { id: "109", title: "Setup CI/CD", status: "in_progress", assigned_to: "6" },
-  {
-    id: "110",
-    title: "Analytics dashboard",
-    status: "pending",
-    assigned_to: "7",
-  },
-  {
-    id: "111",
-    title: "Write test cases",
-    status: "completed",
-    assigned_to: "8",
-  },
+// Departments for filter
+const departments = [
+  "All",
+  ...Array.from(
+    new Set((initialEmployees || []).map((e) => e.department).filter(Boolean))
+  ),
 ];
 
 const statusLabels = {
@@ -134,14 +26,6 @@ const statusLabels = {
   in_progress: "In Progress",
   completed: "Completed",
 };
-const departments = [
-  "All",
-  "Engineering",
-  "Design",
-  "Marketing",
-  "HR",
-  "Analytics",
-];
 
 export default function Employees() {
   const [employees, setEmployees] = useState(initialEmployees);
