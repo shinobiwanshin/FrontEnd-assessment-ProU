@@ -8,6 +8,12 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import GroupsIcon from "@mui/icons-material/Groups";
 import sampleNestedData from "../Entities/sampleNestedEmployees.json";
 import { normalizeNestedEmployeesData } from "../utils/normalizeMockData";
+import {
+  loadEmployees,
+  loadTasks,
+  saveEmployees,
+  seedInitialDataIfNeeded,
+} from "../utils/storage";
 
 // normalized mock data
 const { employees: initialEmployees, tasks: initialTasks } =
@@ -28,8 +34,14 @@ const statusLabels = {
 };
 
 export default function Employees() {
-  const [employees, setEmployees] = useState(initialEmployees);
-  const [tasks] = useState(initialTasks);
+  React.useEffect(() => {
+    seedInitialDataIfNeeded(initialEmployees, initialTasks);
+  }, []);
+
+  const [employees, setEmployees] = useState(
+    () => loadEmployees() || initialEmployees
+  );
+  const [tasks] = useState(() => loadTasks() || initialTasks);
   const [searchQuery, setSearchQuery] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("All");
   const [showAddEmployee, setShowAddEmployee] = useState(false);
@@ -74,7 +86,12 @@ export default function Employees() {
 
   const handleAddEmployee = () => {
     if (!newEmployee.name || !newEmployee.email) return;
-    setEmployees([...employees, { id: Date.now().toString(), ...newEmployee }]);
+    const newList = [
+      ...employees,
+      { id: Date.now().toString(), ...newEmployee },
+    ];
+    setEmployees(newList);
+    saveEmployees(newList);
     setNewEmployee({
       name: "",
       position: "",

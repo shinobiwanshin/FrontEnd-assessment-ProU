@@ -8,6 +8,12 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import WarningIcon from "@mui/icons-material/Warning";
 import sampleNestedData from "../Entities/sampleNestedEmployees.json";
 import { normalizeNestedEmployeesData } from "../utils/normalizeMockData";
+import {
+  loadEmployees,
+  loadTasks,
+  saveTasks,
+  seedInitialDataIfNeeded,
+} from "../utils/storage";
 
 const { employees: initialEmployees, tasks: initialTasks } =
   normalizeNestedEmployeesData(sampleNestedData);
@@ -28,8 +34,12 @@ const statusFilters = [
 ];
 
 export default function Tasks() {
-  const [employees] = useState(initialEmployees);
-  const [tasks, setTasks] = useState(initialTasks);
+  React.useEffect(() => {
+    seedInitialDataIfNeeded(initialEmployees, initialTasks);
+  }, []);
+
+  const [employees] = useState(() => loadEmployees() || initialEmployees);
+  const [tasks, setTasks] = useState(() => loadTasks() || initialTasks);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
@@ -93,6 +103,10 @@ export default function Tasks() {
     });
     setShowAddTask(false);
   };
+
+  React.useEffect(() => {
+    saveTasks(tasks);
+  }, [tasks]);
 
   const handleUpdateStatus = (taskId, newStatus) => {
     setTasks(

@@ -30,6 +30,12 @@ import EmailIcon from "@mui/icons-material/Email";
 
 import sampleNestedData from "../Entities/sampleNestedEmployees.json";
 import { normalizeNestedEmployeesData } from "../utils/normalizeMockData";
+import {
+  loadEmployees,
+  loadTasks,
+  saveTasks,
+  seedInitialDataIfNeeded,
+} from "../utils/storage";
 
 const { employees: initialEmployees, tasks: initialTasks } =
   normalizeNestedEmployeesData(sampleNestedData);
@@ -103,8 +109,13 @@ function TaskBarChart({ pending, inProgress, completed }) {
 }
 
 export default function Dashboard() {
-  const [employees] = useState(initialEmployees);
-  const [tasks, setTasks] = useState(initialTasks);
+  // seed localStorage if not present
+  React.useEffect(() => {
+    seedInitialDataIfNeeded(initialEmployees, initialTasks);
+  }, []);
+
+  const [employees] = useState(() => loadEmployees() || initialEmployees);
+  const [tasks, setTasks] = useState(() => loadTasks() || initialTasks);
   const [activeTab, setActiveTab] = useState("overview");
   const [showAddTask, setShowAddTask] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -165,6 +176,11 @@ export default function Dashboard() {
     });
     setShowAddTask(false);
   };
+
+  // persist tasks on change
+  React.useEffect(() => {
+    saveTasks(tasks);
+  }, [tasks]);
 
   const tabs = [
     { value: "overview", label: "Overview" },
