@@ -78,7 +78,6 @@ export default function TaskCard({ task, employee }) {
 
         {employee && (
           <div className="flex flex-col items-center gap-1">
-            {/* Always show initials fallback to avoid image layout issues */}
             <Avatar
               alt={employee.name}
               fallback={initials}
